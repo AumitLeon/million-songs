@@ -11,9 +11,13 @@ Once you download the dataset, you'll notice that the file structure is as follo
             ...
         data/
             A/
-                A/ ... Z/
+                A/
+                ...
+                Z/
             B/
-                A/ ... I/
+                A/
+                ...
+                I/
 ```
 The data directory has subdirectories that act like volumes-- if you go deep enough you'll find the H5 files that correspond to each song. 
 
@@ -24,7 +28,7 @@ HD5 files are binary files, so they are not very useful to us as they are given.
 
 The million song dataset provides python wrappers within `hd5_getters.py` that can be used to recursively loop through each subdirectory and h5 file to extract certain features of the data. 
 
-`get_data.py` will visit every subdirectory (starting from the path you give `indir`), and will create a CSV of the data extracted from each h5 file.
+`get_data.py` will visit every subdirectory (starting from the path you give `indir`), and will create a CSV of the data extracted from each h5 file. You don't need to put this script any place special, just be sure to provide it a proper path for `indir`. The `output.csv` file will be created in the same directory as this python script, so be sure not to commit that CSV file to Git :) 
 
 As far as I can tell, each h5 file corresponds to one song. THat might not be true of every h5 file, maybe there is a way we can verify this?
 
