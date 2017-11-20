@@ -4,6 +4,16 @@ This project depends on the Million Songs Dataset available at: https://labrosa.
 
 Initial experiments are done with the smaller, experimental subset provided at: https://labrosa.ee.columbia.edu/millionsong/pages/getting-dataset
 
+Contributers: Aumit Leon, Mariana Echeverria
+
+## Table of Contents
+
+- [Directory Overview](#directory-overview)
+- [Converting the data to a usable format](#converting-the-data-to-a-useable-format)
+- [Things to work on](#things-to-work-on)
+
+
+### Directory Overview
 Once you download the dataset, you'll notice that the file structure is as follows: 
 ```
     MillionSongSubset/
