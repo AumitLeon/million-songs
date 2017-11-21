@@ -8,7 +8,6 @@ import csv
 #h5 = hdf5_getters.open_h5_file_read("/mnt/c/Users/Aumit/Desktop/final-proj/MillionSongSubset/data/A/A/A/TRAAADZ128F9348C2E.h5")
 #title = hdf5_getters.get_artist_name(h5)
 #h5.close()
-#hello
 #print title
 
 # Provide the starting root dir 
