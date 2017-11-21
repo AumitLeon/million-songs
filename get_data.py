@@ -9,6 +9,7 @@ import csv
 #title = hdf5_getters.get_artist_name(h5)
 #h5.close()
 #hello
+# HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 #print title
 
 # Provide the starting root dir 
