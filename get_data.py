@@ -41,11 +41,17 @@ with open("output.csv", 'wb') as csvfile:
             # Get the title of the song
             title = hdf5_getters.get_title(h5)
 
+            # Get artist location
+            artist_location = hdf5_getters.get_artist_location(h5)
+
+            # Get release
+            release = hdf5_getters.get_release(h5)
+
             # Close the h5 file
             h5.close()
 
             # Write to the CSV file
-            csvfile.write(artist_name + "," + title)
+            csvfile.write(artist_name + "," + title + "," + artist_location + "," + release)
             csvfile.write("\n")
 
             # Move on to the next h5 file
