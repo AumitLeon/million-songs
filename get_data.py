@@ -3,6 +3,7 @@
 import hdf5_getters
 import os
 import csv
+import string
 
 # Debugging
 #h5 = hdf5_getters.open_h5_file_read("/mnt/c/Users/Aumit/Desktop/final-proj/MillionSongSubset/data/A/A/A/TRAAADZ128F9348C2E.h5")
@@ -37,23 +38,30 @@ with open("output.csv", 'wb') as csvfile:
 
             # Get the artist name
             artist_name = hdf5_getters.get_artist_name(h5)
+            artist = artist_name.translate(None, string.punctuation)
+            
 
             # Get the title of the song
-            title = hdf5_getters.get_title(h5)
+            title_song = hdf5_getters.get_title(h5)
+            title = title_song.translate(None, string.punctuation)
 
             # Get artist location
             artist_location = hdf5_getters.get_artist_location(h5)
+            artist_loc = artist_location.translate(None, string.punctuation)
 
             # Get release
-            release = hdf5_getters.get_release(h5)
+            release_song = hdf5_getters.get_release(h5)
+            release = release_song.translate(None, string.punctuation)
 
             # Close the h5 file
             h5.close()
 
             # Write to the CSV file
-            csvfile.write(artist_name + "," + title + "," + artist_location + "," + release)
+            csvfile.write(artist + "," + title + "," + artist_loc + "," + release)
             csvfile.write("\n")
 
+            # Print the current song and arists: 
+            print title + " by " + artist_name
             # Move on to the next h5 file
             print
             print
