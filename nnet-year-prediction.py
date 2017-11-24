@@ -1,4 +1,5 @@
-# Crude neural net for year prediction (5% accuracy)
+# Crude neural net for year prediction (7.5% accuracy)
+# Script requires sci-kit learn. To install: 
 # Data available at: http://archive.ics.uci.edu/ml/datasets/YearPredictionMSD
 # 90 features per example
 # 12 = timbre averae
@@ -10,8 +11,8 @@
 # HOW TO CONVERT TEXT FILE TO CSV (once dataset is downloaded)
 # cd into the Directory where you have the dataset downloaded
 # Run the following: 
-# head -2000 YearPredictionsMSD.txt > yp_test.csv
-# The above command will create a CSV file with the first 2000 examples
+# head YearPredictionsMSD.txt > yp_test.csv
+# Docs for sci-kitlearn: http://scikit-learn.org/stable/modules/neural_networks_supervised.html
 
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
@@ -29,7 +30,7 @@ labels = []
 examples = []
 
 # Replace filename with the path to the CSV where you have the year predictions data saved.
-filename = "/mnt/c/Users/Aumit/Desktop/YearPredictionMSD.txt/yp_test.csv"
+filename = "/mnt/c/Users/Aumit/Desktop/YearPredictionMSD.txt/yp.csv"
 with open(filename, 'r') as f:
     for line in f:
         content = line.split(",")
@@ -47,25 +48,29 @@ with open(filename, 'r') as f:
 
 
 # Split training and test:
-training_examples = examples[:1500]
-training_labels = labels[:1500]
+# Increase or decrease these sizes
+# Currently using first 10000 examples as training data
+# Last 1000 as test data
+training_examples = examples[:10000]
+training_labels = labels[:10000]
 
-test_examples = examples[-500:]
-test_labels = labels[-500:]
+test_examples = examples[-1000:]
+test_labels = labels[-1000:]
 
 # Debugging
 #X = [[0., 0.], [1., 1.]]
 #y = [0, 1]
 
 # Solver can be lbfgs, sgd, adam
+# We can tune the hidden layers sizes
 clf = MLPClassifier(solver='sgd', alpha=1e-5,
-                     hidden_layer_sizes=(5, 2), random_state=1)
+                     hidden_layer_sizes=(100, 100, 100, 100), random_state=1)
 
 clf.fit(training_examples, training_labels)                         
 MLPClassifier(activation='relu', alpha=0.001, batch_size='auto',
        beta_1=0.9, beta_2=0.999, early_stopping=False,
-       epsilon=1e-08, hidden_layer_sizes=(5, 2), learning_rate='constant',
-       learning_rate_init=0.001, max_iter=200, momentum=0.9,
+       epsilon=1e-08, hidden_layer_sizes=(100, 100, 100, 100), learning_rate='constant',
+       learning_rate_init=0.001, max_iter=500, momentum=0.9,
        nesterovs_momentum=True, power_t=0.5, random_state=1, shuffle=True,
        solver='sgd', tol=0.0001, validation_fraction=0.1, verbose=False,
        warm_start=False)
