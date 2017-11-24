@@ -1,20 +1,9 @@
-# Crude neural net for year prediction (7.5% accuracy)
-# Script requires sci-kit learn. To install: 
-# Data available at: http://archive.ics.uci.edu/ml/datasets/YearPredictionMSD
-# 90 features per example
-# 12 = timbre averae
-# 78 = timbre covariance
-# Uses a subset of the full dataset to train faster
-#
-#
-#
-# HOW TO CONVERT TEXT FILE TO CSV (once dataset is downloaded)
-# cd into the Directory where you have the dataset downloaded
-# Run the following: 
-# head YearPredictionsMSD.txt > yp_test.csv
-# Docs for sci-kitlearn: http://scikit-learn.org/stable/modules/neural_networks_supervised.html
+# Crude SVM implementation
+# Most of this data extraction code is from the nnet year prediction experiement
+# Same training/test split applied to SVM
+# Interestingly... same accuracy. 
 
-from sklearn.neural_network import MLPClassifier
+from sklearn import svm
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import precision_recall_fscore_support
 import numpy as np
@@ -57,24 +46,9 @@ training_labels = labels[:10000]
 test_examples = examples[-1000:]
 test_labels = labels[-1000:]
 
-# Debugging
-#X = [[0., 0.], [1., 1.]]
-#y = [0, 1]
+clf = svm.SVC(decision_function_shape='ovo')
+clf.fit(training_examples, training_labels)  
 
-# Solver can be lbfgs, sgd, adam
-# We can tune the hidden layers sizes
-clf = MLPClassifier(solver='sgd', alpha=1e-5,
-                     hidden_layer_sizes=(100, 100, 100, 100), random_state=1)
-
-clf.fit(training_examples, training_labels)                         
-
-
-#Debugging
-#print clf.predict([[2., 2.], [-1., -2.]])
-
-# Acuracy given these lists should be 0.75
-#y_pred = [0, 2, 1, 3]
-#y_true = [0, 1, 1, 3]
 
 y_pred = clf.predict(test_examples)
 accuracy = accuracy_score(test_labels, y_pred) * 100
