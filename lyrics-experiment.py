@@ -1,6 +1,8 @@
+# lyrics-experiment.py
+# Aumit Leon and Mariana Echeverria 
+
 import numpy as np 
 import csv
-
 
 
 def read_txt(filename):
@@ -21,56 +23,52 @@ def read_txt(filename):
     
     for line in read_file:
         if find:
-            # obtaining data 
-            list_line = line.strip().split(',')
-            track_id.append(list_line[0])
-            mxm_tid.append(list_line[1])
-            data = list_line[2:]
-            dictionary = {}
-
-            for el in data:
-                index = el.find(':')
-                key = el[:index]
-                val = el[index+1:]
-                dictionary[int(key)] = int(val)
-            content.append(dictionary)
-
+            line = line.strip() # converting line into list
+            index1 = line.find(',') # finds index of 1st comma
+            index2 = line.find(',', index1+1) # finds index of 2nd comma
+            track_id.append(line[:index1]) # appends track id to list 
+            mxm_tid.append(line[:index2]) # appends track id to list 
+            res = '{' + line[index2+1:] + '}' # simulates dictionary with string
+            d = eval(res) # converts string to actual dictionary 
+            content.append(d) # appends track data to content list
         else:
             # obtaining line with 5,000 words 
             if line.startswith(string):
-                line = line[1:]
+                line = line[1:] # getting rid of %
                 words = [word.strip() for word in line.split(',')]
-                find = True
+                find = True # already found list of words 
     read_file.close() 
-    
 
     return (words, content)
 
 
-def write_data(filename):
-   
+def create_vectors(list_dict, num_words):
+    """
+    Returns a list with numpy vectors of data 
+    """
+    x = [] # list that will hold data 
 
-    with open(fieldname, 'w') as csvfile:
-        fieldnames = [i for i in range(1,5001)]
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    for d in list_dict:
+        # initializing numpy vector
+        # it contains 5,000 (number of words) zeros
+        temp = np.zeros(num_words)
+        for key, val in d.items():
+            key -= 1 # indexing in data starts at 1
+            temp[key] = val # adding word and its frequency to vector 
 
-        writer.writeheader()
-
-        writer.writerow({'first_name': 'Baked', 'last_name': 'Beans'})
-        writer.writerow({'first_name': 'Lovely', 'last_name': 'Spam'})
-        writer.writerow({'first_name': 'Wonderful', 'last_name': 'Spam'})
-
-
+        x.append(temp) # appends vector to x 
+    
+    return x
 
 
 if __name__ == "__main__":
-    #(track_id, words, mxm_tid, data) = extract_data("mxm_dataset_test.csv")
-    #print(data)
-    #print(track_id)
-    #print(mxm_tid)
-    #print(words)
-
-    (words, content) = read_txt('mxm_dataset_train.txt')
+    (words, content) = read_txt('mxm_dataset_test.txt')
     print(len(content))
-    print(content[0])
+    #write_data('output2.csv')
+    print(content[1])
+    x = create_vectors(content, 5000)
+    ex = x[1]
+    for el in ex:
+        print(el)
+    #print(x[1])
     
