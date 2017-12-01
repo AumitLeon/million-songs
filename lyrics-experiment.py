@@ -43,8 +43,9 @@ def read_txt(filename):
                 words = [word.strip() for word in line.split(',')]
                 find = True # already found list of words 
     read_file.close() 
+    
 
-    return (words, content)
+    return (words, content, track_id, mxm_tid)
 
 
 def create_vectors(list_dict, num_words):
@@ -64,12 +65,12 @@ def create_vectors(list_dict, num_words):
             key -= 1 # indexing in data starts at 1
             temp[key] = val # adding word and its frequency to vector 
 
-        x.append(temp) # appends vector to x 
-    
+        x.append(temp) # appends vector to x  
+
     return x
 
 
-# ===  HW 5 CODE 
+# ===  HW 5 CODE (K-Means)
 
 def squared_distance(vector_1, vector_2):
     """
@@ -78,9 +79,9 @@ def squared_distance(vector_1, vector_2):
     # computing difference
     distance = vector_1 - vector_2
     # squaring difference 
-    distance *= distance 
+    squared = np.dot(np.transpose(distance), distance)
 
-    return sum(distance)
+    return squared
 
 
 def closest_cluster(xi, mu):
@@ -254,11 +255,12 @@ def run_various_Ks(x, K):
 
 
 if __name__ == "__main__":
-    (words, test_list) = read_txt('mxm_dataset_test.txt')
+    (words, test_list, track_id, mxm_tid) = read_txt('mxm_dataset_test.txt')
     #(words, train_list) = read_txt('mxm_dataset_train.txt')
+    
     x = create_vectors(test_list, 5000)
     
-    run_various_Ks(x[:100],30)
+    run_various_Ks(x[:1000],30)
     
     
     # print(len(content))
