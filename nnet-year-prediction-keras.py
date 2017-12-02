@@ -4,6 +4,7 @@ from keras.layers import Dense
 from keras.layers import Flatten
 import numpy as np
 from sklearn import preprocessing
+from keras import regularizers
 
 from keras.utils import np_utils, generic_utils
 
@@ -12,14 +13,15 @@ from keras.utils import np_utils, generic_utils
 
 model = Sequential()
 model.add(Dense(units=100, activation='relu', input_dim=90))
-model.add(Dense(units=100, activation='relu'))
-model.add(Dense(units=100, activation='relu'))
-model.add(Dense(units=100, activation='relu'))
+model.add(Dense(units=100, activation='relu', kernel_regularizer=regularizers.l2(0.00001)))
+model.add(Dense(units=100, activation='relu', kernel_regularizer=regularizers.l2(0.00001)))
+model.add(Dense(units=100, activation='relu', kernel_regularizer=regularizers.l2(0.00001)))
 model.add(Dense(units=100, activation='relu'))
 #model.add(Flatten())
 model.add(Dense(units=2011, activation='softmax'))
 
 
+#sgd = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
 model.compile(loss='categorical_crossentropy',
               optimizer='sgd',
               metrics=['accuracy'])
@@ -61,13 +63,13 @@ total_labels = np.array(labels)
 # Increase or decrease these sizes
 # Currently using first 10000 examples as training data
 # Last 1000 as test data
-training_examples = total_scaled[:1000]
+training_examples = total_scaled[:10000]
 #training_examples = random.sample(total_array, 10)
-training_labels = total_labels[:1000]
+training_labels = total_labels[:10000]
 
 # Use the following 1000 examples as text examples
-test_examples = total_scaled[2000:2200]
-test_labels = total_labels[2000:2200]
+test_examples = total_scaled[10000:11000]
+test_labels = total_labels[10000:11000]
 
 
 
@@ -82,6 +84,7 @@ y_test = keras.utils.to_categorical(test_labels, num_classes=2011)
 #y_train = training_labels.reshape(1000,1)
 #y_test = test_labels.reshape(200,1)
 
-model.fit(training_examples, y_train, epochs=5, batch_size=32)
+model.fit(training_examples, y_train, epochs=200, batch_size=32)
 
-loss_and_metrics = model.evaluate(test_examples, y_test, batch_size=128)
+loss_and_metrics = model.evaluate(test_examples, y_test, batch_size=32)
+print loss_and_metrics
