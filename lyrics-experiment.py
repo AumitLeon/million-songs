@@ -60,10 +60,10 @@ def create_vectors(list_dict, num_words):
     for d in list_dict:
         # initializing numpy vector
         # it contains 5,000 (number of words) zeros
-        temp = np.zeros(num_words)
+        temp = np.zeros(num_words, dtype=np.float64)
         for key, val in d.items():
             key -= 1 # indexing in data starts at 1
-            temp[key] = val # adding word and its frequency to vector 
+            temp[key] = 1 # adding word and its frequency to vector 
 
         x.append(temp) # appends vector to x  
 
@@ -255,12 +255,16 @@ def run_various_Ks(x, K):
 
 
 if __name__ == "__main__":
-    (words, test_list, track_id, mxm_tid) = read_txt('mxm_dataset_test.txt')
-    #(words, train_list) = read_txt('mxm_dataset_train.txt')
+    #(words, test_list, track_id, mxm_tid) = read_txt('mxm_dataset_test.txt')
+    (words, train_list, track_id, mxm_tid) = read_txt('mxm_dataset_train.txt')
+    print('== FINISHED TRAIN TEST')
+    x = create_vectors(train_list, 5000)
+    print('== FINISHED CREATING VECTOR')
     
-    x = create_vectors(test_list, 5000)
-    
-    run_various_Ks(x[:1000],30)
+    (min_val, min_mu, min_c) = run(x,3)
+    print('== FINISHED CLUSTERING')
+    print(min_val)
+    #run_various_Ks(x[:1000],30)
     
     
     # print(len(content))
