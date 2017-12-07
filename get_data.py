@@ -1,4 +1,10 @@
 # Convert HD5 files to CSV
+# Extracts features from every song and save them as columns in our dataset
+# Features extracted: artist_name, title, artist_location, 
+# release,hotttness, familiarity, danceability, duration,energy, 
+# loudness, year, tempo, analysis_rate, end_of_fade_in, key, 
+# key_confidence, mode, mode_confidence, start_of_fade_out, 
+# time_signature,time_signature_conf, track_id
 
 import hdf5_getters
 import os
@@ -9,20 +15,19 @@ import string
 #h5 = hdf5_getters.open_h5_file_read("/mnt/c/Users/Aumit/Desktop/final-proj/MillionSongSubset/data/A/A/A/TRAAADZ128F9348C2E.h5")
 #title = hdf5_getters.get_artist_name(h5)
 #h5.close()
-#hello
-# HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 #print title
 
 # Provide the starting root dir 
 # This is different for your particular setup! 
-indir = '/mnt/c/Users/Aumit/Desktop/final-proj/MillionSongSubset/data/B/'
+indir = '/mnt/c/Users/Aumit/Desktop/final-proj/MillionSongSubset/data/'
 
 # Open the CSV file we will write to
 with open("output.csv", 'wb') as csvfile:
     # Column headers
     # Currently only 4 features being extracted
     # We can add as many as we want, just seperate with commas
-    csvfile.write("artist_name, title, artist_location, release, hotttness, familiarity, danceability, duration, energy, loudness, year, tempo, analysis_rate, end_of_fade_in ,key, key_confidence, mode, mode_confidence, start_of_fade_out, time_signature, time_signature_conf, track_id")
+    csvfile.write("artist_name,title,artist_location,release,hotttness,familiarity,danceability,duration,energy,loudness,year,tempo,analysis_rate,end_of_fade_in,key,key_confidence,mode,mode_confidence,start_of_fade_out,time_signature,time_signature_conf,track_id")
+    #csvfile.write("familiarity, hotttness")
     csvfile.write("\n")
 
     # Recursively visit each sub-dir till we reach the h5 files
@@ -119,6 +124,7 @@ with open("output.csv", 'wb') as csvfile:
 
             # Write to the CSV file
             csvfile.write(artist + "," + title + "," + artist_loc + "," + release + "," + str(hotttness) + "," + str(familiarity) + "," + str(danceability) + "," + str(duration) + "," + str(energy) + "," + str(loudness) + "," + str(year) + "," + str(tempo) + "," + str(analysis_rate) + "," + str(end_of_fade_in) + "," + str(key) + "," + str(key_confidence) + "," + str(mode) + "," + str(mode_confidence) + "," + str(start_of_fade_out) + "," + str(time_signature) + "," + str(time_signature_conf) + "," + str(track_id))
+            #csvfile.write(str(familiarity) + "," + str(hotttness))
             csvfile.write("\n")
 
             # Print the current song and arists: 
