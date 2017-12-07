@@ -6,12 +6,8 @@ Initial experiments are done with the smaller, experimental subset provided at: 
 
 Contributers: Aumit Leon, Mariana Echeverria
 
-## Table of Contents
-
-- [Directory Overview](#directory-overview)
-- [Converting the data to a usable format](#converting-the-data-to-a-useable-format)
-- [Things to work on](#things-to-work-on)
-
+### Experiments and Results
+To view our experiments and results, check out our wiki: https://github.com/AumitLeon/million-songs/wiki
 
 ### Directory Overview
 Once you download the dataset, you'll notice that the file structure is as follows: 
@@ -42,7 +38,3 @@ The million song dataset provides python wrappers within `hd5_getters.py` that c
 
 As far as I can tell, each h5 file corresponds to one song. THat might not be true of every h5 file, maybe there is a way we can verify this?
 
-### Things to work on
-* Finish extracting the data, pick out what features we want to use
-* Pick what aspect of the data we want to run experiment on
-* Prototype some crude ML models! 
