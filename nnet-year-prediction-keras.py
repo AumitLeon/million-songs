@@ -78,17 +78,10 @@ training_labels = total_labels[:10000]
 test_examples = total_scaled[10000:11000]
 test_labels = total_labels[10000:11000]
 
-#y_train, y_test = [np_utils.to_categorical(x) for x in (training_labels, test_labels)]
-
-print "****Shape of y_train:" + str(training_examples.shape)
-
 # Convert to categorical in order to produce proper output
-
 y_train = keras.utils.to_categorical(training_labels, num_classes=2011)
 
 y_test = keras.utils.to_categorical(test_labels, num_classes=2011)
-#y_train = training_labels.reshape(1000,1)
-#y_test = test_labels.reshape(200,1)
 
 # Train the model!
 model.fit(training_examples, y_train, epochs=200, batch_size=32)
