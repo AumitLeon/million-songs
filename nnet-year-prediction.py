@@ -1,3 +1,4 @@
+# Neural network implementation using scikit-learn 
 # Crude neural net for year prediction (7.5% accuracy)
 # Script requires sci-kit learn. To install: 
 # Data available at: http://archive.ics.uci.edu/ml/datasets/YearPredictionMSD
@@ -18,6 +19,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import precision_recall_fscore_support
 from sklearn import preprocessing
+from sklearn.model_selection import GridSearchCV
 import numpy as np
 
 # Scikit learn gives a depreaction warning for the rank function
@@ -30,6 +32,8 @@ warnings.filterwarnings("ignore")
 labels = []
 examples = []
 
+print "GETTING DATASET"
+print
 # Replace filename with the path to the CSV where you have the year predictions data saved.
 filename = "/mnt/c/Users/Aumit/Desktop/YearPredictionMSD.txt/yp.csv"
 with open(filename, 'r') as f:
@@ -40,7 +44,7 @@ with open(filename, 'r') as f:
 
         content.pop(0)
 
-        # If we wanted pure lists
+        # If we wanted pure lists and convert to numpy arrays
         #content = [float(elem) for elem in content]
         #content = map(float, content)
 
@@ -49,6 +53,8 @@ with open(filename, 'r') as f:
 
         examples.append(content)
 
+print "SPLITTING TRAINING AND TEST SETS"
+print 
 # Turning lists into numpy arrays
 total_array = np.array(examples)
 
@@ -59,30 +65,31 @@ total_scaled = preprocessing.scale(total_array)
 total_labels = np.array(labels)
 
 # Split training and test:
-# Increase or decrease these sizes
-# Currently using first 10000 examples as training data
-# Last 1000 as test data
-training_examples = total_scaled[:10000]
+training_examples = total_scaled[:100]
 #training_examples = random.sample(total_array, 10)
-training_labels = total_labels[:10000]
+training_labels = total_labels[:100]
 
 # Use the following 1000 examples as text examples
-test_examples = total_scaled[10000:11000]
-test_labels = total_labels[10000:11000]
+test_examples = total_scaled[500:700]
+test_labels = total_labels[500:700]
 
 
 # Debugging
 #X = [[0., 0.], [1., 1.]]
 #y = [0, 1]
 
-# Solver can be lbfgs, sgd, adam
-# We can tune the hidden layers sizes
-# 50, 50, 20 with 100 batch size worked well
-# 0.0000001 9.4%
-# 0.00001
-clf = MLPClassifier(solver='sgd', alpha=0.00001,
-                     hidden_layer_sizes=(50, 50, 20), random_state=1, batch_size = 100, learning_rate="adaptive", max_iter=200,
-                     momentum=0.9)
+# Parameter tuning
+# print "PARAMETER TUNING"
+#print
+"""
+clf_tune = MLPClassifier()
+parameters = {'solver':("sgd", "adam", "lbfgs"), 'activation':('identity', 'logistic', 'tanh', 'relu'), 'alpha':[0.00000000001, 0.99], 'batch_size':[1, 100], 'learning_rate':('adaptive', 'constant', 'invscaling')}
+clf = GridSearchCV(clf_tune, parameters)
+"""
+clf = MLPClassifier(solver='sgd', alpha=0,
+                     hidden_layer_sizes=(10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10), random_state=1, batch_size = 20, learning_rate="adaptive", max_iter=200,
+                     momentum=0.9, activation="relu")
+
 
 clf.fit(training_examples, training_labels)                         
 
@@ -94,9 +101,11 @@ clf.fit(training_examples, training_labels)
 #y_pred = [0, 2, 1, 3]
 #y_true = [0, 1, 1, 3]
 
-y_pred = clf.predict(test_examples)
-accuracy = accuracy_score(test_labels, y_pred) * 100
+# Print results
+
+y_pred = clf.predict(training_examples)
+accuracy = accuracy_score(training_labels, y_pred) * 100
 print "Accuracy of the model is: " + str(accuracy) + "%"
-print "Score: " + str(clf.score(test_examples, test_labels))
+print "Score: " + str(clf.score(training_examples, training_labels))
 print "Precision, recall and f-score:"
-print precision_recall_fscore_support(test_labels, y_pred, average="micro")
+print precision_recall_fscore_support(training_labels, y_pred, average="micro")
